@@ -1,5 +1,11 @@
 version: 0.2
 
+env:
+  parameter-store:
+    DOCKER_REGISTRY_USERNAME: /myapp/docker-credentials/username
+    DOCKER_REGISTRY_PASSWORD: /myapp/docker-credentials/password
+    DOCKER_REGISTRY_URL: /myapp/docker-registry/url
+
 phases:
   install:
     runtime-versions:
@@ -7,7 +13,17 @@ phases:
     commands:
       - pip install -r requirements.txt
 
-  build:
+    build:
     commands:
-      - echo "Starting Flask App"
-      - nohup python cicd_app.py &
+      - docker build -t $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/simple-python-flask-app:latest .
+      - echo "$DOCKER_REGISTRY_PASSWORD" | docker login $DOCKER_REGISTRY_URL -u "$DOCKER_REGISTRY_USERNAME" --password-stdin
+      - docker push $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/simple-python-flask-app:latest
+
+    post_build:
+    commands:
+      - echo "Build is Successfull"
+
+  artifacts:
+  files:
+    - '**/*'
+  base-directory: ../simple-python-app
