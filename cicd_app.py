@@ -105,7 +105,7 @@ html = '''
             </p>
             <p>
                 CI/CD helps teams release software quickly, efficiently, and with higher confidence.<br>
-                Popular tools include Jenkins, GitHub Actions, GitLab CI, Travis CI, CircleCI, etc.
+                Popular tools include Jenkins, GitHub Actions, GitLab CI, etc.
             </p>
             <div class="footer">
                 Deployed via CI/CD Pipeline | Flask App © 2025
